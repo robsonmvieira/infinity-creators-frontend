@@ -1,0 +1,23 @@
+{
+  "Common": {
+    "appName": "Infinity Creators",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "back": "Volver",
+    "next": "Siguiente",
+    "confirm": "Confirmar",
+    "search": "Buscar",
+    "noResults": "No se encontraron resultados",
+    "error": "Ocurrió un error",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "Nav": {
+    "dashboard": "Panel",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión"
+  }
+}
