@@ -44,10 +44,10 @@ function ProblemCard({
 
 export function ProblemSection() {
   return (
-    <section className="bg-background px-6 py-24 md:px-12">
+    <section className="bg-background px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
+          <h2 className="mb-4 text-3xl font-bold tracking-tight lg:text-4xl">
             O fim do conteúdo genérico
           </h2>
           <p className="max-w-xl text-on-surface-variant">
@@ -56,7 +56,7 @@ export function ProblemSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <ProblemCard
             label="Criação Manual"
             labelColor="text-error"

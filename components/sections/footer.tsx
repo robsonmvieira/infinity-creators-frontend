@@ -30,7 +30,7 @@ function FooterColumn({ title, titleColor, links }: FooterColumnProps) {
 
 function FooterLogo() {
   return (
-    <div className="col-span-2 space-y-6 md:col-span-1">
+    <div className="col-span-2 space-y-6 lg:col-span-1">
       <div className="flex items-center gap-3">
         <div className="brand-gradient flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-white">
           IC
@@ -65,8 +65,8 @@ function FooterLogo() {
 
 export function Footer() {
   return (
-    <footer className="border-t border-outline-variant/10 bg-surface-container-lowest px-6 py-20 md:px-12">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-12 md:grid-cols-4">
+    <footer className="border-t border-outline-variant/10 bg-surface-container-lowest px-6 py-20 lg:px-12">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-12 md:grid-cols-2 lg:grid-cols-4">
         <FooterLogo />
         <FooterColumn
           title="Produto"

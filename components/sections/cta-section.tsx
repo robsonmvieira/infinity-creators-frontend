@@ -1,8 +1,8 @@
 export function CtaSection() {
   return (
-    <section className="border-y border-outline-variant/10 bg-background px-6 py-24 md:px-12">
+    <section className="border-y border-outline-variant/10 bg-background px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-4xl space-y-8 text-center">
-        <h2 className="text-4xl font-black leading-tight tracking-tight md:text-5xl">
+        <h2 className="text-4xl font-black leading-tight tracking-tight lg:text-5xl">
           Pronto para transformar sua criação?
         </h2>
         <p className="text-lg text-on-surface-variant">

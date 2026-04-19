@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 function HeroBadge() {
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-outline-variant/20 bg-surface-container px-3 py-1 text-xs font-medium uppercase tracking-wide text-tertiary">
@@ -28,46 +26,27 @@ function HeroCTA() {
   )
 }
 
-function HeroMockup() {
-  return (
-    <div className="brand-gradient mt-20 w-full max-w-6xl overflow-hidden rounded-2xl p-px">
-      <div className="overflow-hidden rounded-[15px] bg-surface-container-low">
-        <Image
-          src="/hero-mockup.png"
-          alt="Dashboard do Infinity Creators mostrando geração de conteúdo multi-plataforma"
-          width={1200}
-          height={675}
-          className="h-auto w-full object-cover opacity-90"
-          priority
-        />
-      </div>
-    </div>
-  )
-}
-
 export function HeroSection() {
   return (
-    <section className="dot-grid relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6 text-center">
+    <section className="dot-grid relative flex flex-col items-center justify-center overflow-hidden px-6 py-24 text-center lg:py-32">
       <div className="absolute left-1/2 top-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[120px]" />
 
       <div className="mx-auto max-w-4xl space-y-8">
         <HeroBadge />
 
-        <h1 className="text-5xl font-black leading-[1.1] tracking-[-0.04em] md:text-7xl">
+        <h1 className="text-5xl font-black leading-[1.1] tracking-[-0.04em] lg:text-7xl">
           Seu conteúdo no{' '}
           <span className="text-brand-gradient">piloto automático</span>. Sem
           perder a sua voz.
         </h1>
 
-        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-on-surface-variant md:text-xl">
+        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-on-surface-variant lg:text-xl">
           A única IA que realmente entende seu tom de voz. 1 input → conteúdo
           otimizado para Instagram, Threads, X e TikTok em segundos.
         </p>
 
         <HeroCTA />
       </div>
-
-      <HeroMockup />
     </section>
   )
 }

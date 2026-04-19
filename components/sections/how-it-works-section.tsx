@@ -67,7 +67,7 @@ export function HowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="bg-surface-container-lowest px-6 py-24 md:px-12"
+      className="bg-surface-container-lowest px-6 py-24 lg:px-12"
     >
       <div className="mx-auto mb-16 max-w-6xl text-center">
         <h2 className="mb-4 text-4xl font-bold tracking-tight">
@@ -78,7 +78,7 @@ export function HowItWorksSection() {
         </p>
       </div>
 
-      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-4">
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((step) => (
           <Step key={step.step} {...step} />
         ))}

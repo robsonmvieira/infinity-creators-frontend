@@ -73,10 +73,10 @@ function PlatformItem({
 
 export function ContentMultiplierSection() {
   return (
-    <section className="bg-background px-6 py-24 md:px-12">
+    <section className="bg-background px-6 py-24 lg:px-12">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-16 lg:flex-row">
         <div className="flex-1 space-y-6">
-          <h2 className="text-4xl font-black leading-tight tracking-tight md:text-5xl">
+          <h2 className="text-4xl font-black leading-tight tracking-tight lg:text-5xl">
             Um input. <br />
             <span className="text-brand-gradient">Infinitas possibilidades.</span>
           </h2>

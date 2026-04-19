@@ -107,7 +107,7 @@ const PLANS: PlanCardProps[] = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="bg-surface-container-low px-6 py-24 md:px-12">
+    <section id="pricing" className="bg-surface-container-low px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-bold tracking-tight">
@@ -118,7 +118,7 @@ export function PricingSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {PLANS.map((plan) => (
             <PlanCard key={plan.name} {...plan} />
           ))}

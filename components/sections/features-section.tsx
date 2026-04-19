@@ -73,8 +73,8 @@ const FEATURES: FeatureCardProps[] = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="bg-background px-6 py-24 md:px-12">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+    <section id="features" className="bg-background px-6 py-24 lg:px-12">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature) => (
           <FeatureCard key={feature.title} {...feature} />
         ))}
