@@ -1,6 +1,5 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   CalendarDays,
@@ -8,6 +7,7 @@ import {
   TrendingUp,
   User,
 } from 'lucide-react'
+import { Link, usePathname } from '@/src/i18n/navigation'
 
 const MOBILE_ITEMS = [
   { label: 'Home', href: '/dashboard', icon: LayoutDashboard },
@@ -25,7 +25,7 @@ export function MobileNav() {
         const Icon = item.icon
         const active = pathname.includes(item.href)
         return (
-          <a
+          <Link
             key={item.href}
             href={item.href}
             className={`flex flex-col items-center gap-1 ${
@@ -36,7 +36,7 @@ export function MobileNav() {
             <span className="text-[10px] font-bold uppercase tracking-tighter">
               {item.label}
             </span>
-          </a>
+          </Link>
         )
       })}
 
@@ -54,7 +54,7 @@ export function MobileNav() {
         const Icon = item.icon
         const active = pathname.includes(item.href)
         return (
-          <a
+          <Link
             key={item.href}
             href={item.href}
             className={`flex flex-col items-center gap-1 ${
@@ -65,7 +65,7 @@ export function MobileNav() {
             <span className="text-[10px] font-bold uppercase tracking-tighter">
               {item.label}
             </span>
-          </a>
+          </Link>
         )
       })}
     </div>

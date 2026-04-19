@@ -1,6 +1,5 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Sparkles,
@@ -12,6 +11,7 @@ import {
   Settings,
   Plus,
 } from 'lucide-react'
+import { Link, usePathname } from '@/src/i18n/navigation'
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -47,9 +47,9 @@ interface NavItemProps {
   active: boolean
 }
 
-function NavItem({ href, label, icon: Icon, active }: NavItemProps) {
+function NavItem({ href, label, icon: Icon, active }: Readonly<NavItemProps>) {
   return (
-    <a
+    <Link
       href={href}
       className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium uppercase tracking-widest transition-all duration-300 ${
         active
@@ -59,7 +59,7 @@ function NavItem({ href, label, icon: Icon, active }: NavItemProps) {
     >
       <Icon size={20} />
       <span>{label}</span>
-    </a>
+    </Link>
   )
 }
 
