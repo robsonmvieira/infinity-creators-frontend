@@ -29,9 +29,10 @@ function generateCsrfToken(): string {
 }
 
 function buildCspHeader(nonce: string): string {
+  const isDev = process.env.NODE_ENV === 'development'
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ''}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
     "font-src 'self' https://fonts.gstatic.com",
@@ -52,10 +53,13 @@ export function proxy(request: NextRequest) {
   // Run next-intl middleware first
   const response = intlMiddleware(request)
 
-  // Generate CSP nonce
+  // Generate CSP nonce (skip CSP in development — Next.js injects inline
+  // scripts without nonces during dev, which strict-dynamic blocks)
   const nonce = generateNonce()
   response.headers.set('x-nonce', nonce)
-  response.headers.set('Content-Security-Policy', buildCspHeader(nonce))
+  if (process.env.NODE_ENV !== 'development') {
+    response.headers.set('Content-Security-Policy', buildCspHeader(nonce))
+  }
 
   // CSRF token cookie
   const existingCsrf = request.cookies.get('csrf_token')?.value
