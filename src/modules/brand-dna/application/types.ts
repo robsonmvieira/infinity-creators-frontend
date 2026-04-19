@@ -92,23 +92,23 @@ export const PALETTE_PRESETS: PalettePreset[] = [
 
 export const DEFAULT_TONALITY: TonalitySlider[] = [
   { id: 'formality', labelLeft: 'Formal', labelRight: 'Casual', value: 65 },
-  { id: 'professionalism', labelLeft: 'Professional', labelRight: 'Witty', value: 30 },
-  { id: 'detail', labelLeft: 'Minimalist', labelRight: 'Detailed', value: 80 },
+  { id: 'professionalism', labelLeft: 'Profissional', labelRight: 'Espirituoso', value: 30 },
+  { id: 'detail', labelLeft: 'Minimalista', labelRight: 'Detalhado', value: 80 },
 ]
 
 export const DEFAULT_REFERENCES: ReferencePost[] = [
   {
     id: '1',
-    title: 'Manifesto: The Future of Creator Tech',
-    source: 'Linked via Notion',
-    lastUpdated: 'Last updated 2d ago',
+    title: 'Manifesto: O Futuro da Tecnologia para Criadores',
+    source: 'Vinculado via Notion',
+    lastUpdated: 'Atualizado ha 2 dias',
     icon: 'article',
   },
   {
     id: '2',
-    title: 'Twitter Thread: Rebranding Infinity',
-    source: 'Imported from X',
-    lastUpdated: 'Last updated 1w ago',
+    title: 'Thread no X: Rebranding Infinity',
+    source: 'Importado do X',
+    lastUpdated: 'Atualizado ha 1 semana',
     icon: 'campaign',
   },
 ]

@@ -12,7 +12,7 @@ export function PersonaInput({ value, onChange }: Readonly<PersonaInputProps>) {
         htmlFor="persona-input"
         className="mb-3 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant"
       >
-        Persona / Primary Author
+        Persona / Autor Principal
       </label>
       <input
         id="persona-input"

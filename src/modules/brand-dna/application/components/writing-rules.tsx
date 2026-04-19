@@ -23,7 +23,7 @@ export function WritingRules({
           className="flex items-center text-[10px] font-bold uppercase tracking-widest text-on-surface-variant"
         >
           <CheckCircle size={12} className="mr-2 text-tertiary" />
-          Always Use
+          Sempre Usar
         </label>
         <textarea
           id="always-use"
@@ -39,7 +39,7 @@ export function WritingRules({
           className="flex items-center text-[10px] font-bold uppercase tracking-widest text-on-surface-variant"
         >
           <XCircle size={12} className="mr-2 text-error" />
-          Never Use
+          Nunca Usar
         </label>
         <textarea
           id="never-use"

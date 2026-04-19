@@ -5,7 +5,7 @@ export function LogoUpload() {
     <section className="rounded-xl border border-outline-variant/10 bg-surface-container p-8 shadow-sm">
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-sm font-bold uppercase tracking-widest text-primary">
-          Master Logo
+          Logo Principal
         </h3>
         <Upload size={20} className="text-on-surface-variant" />
       </div>
@@ -15,10 +15,10 @@ export function LogoUpload() {
           <Plus size={28} className="text-primary" />
         </div>
         <p className="text-sm font-medium text-on-surface">
-          Drop brand assets here
+          Arraste os assets da marca aqui
         </p>
         <p className="mt-1 text-xs text-on-surface-variant">
-          SVG, PNG or AI (Max 20MB)
+          SVG, PNG ou AI (Max 20MB)
         </p>
       </div>
     </section>

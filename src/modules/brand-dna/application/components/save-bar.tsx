@@ -10,7 +10,7 @@ export function SaveBar() {
           </div>
           <div>
             <p className="text-xs font-bold text-on-surface">
-              Auto-saved to Cloud
+              Salvo automaticamente
             </p>
             <p className="text-[10px] text-on-surface-variant">
               Infinity Creators DNA v1.0.4
@@ -23,13 +23,13 @@ export function SaveBar() {
             type="button"
             className="rounded-xl px-6 py-2.5 text-sm font-bold text-on-surface transition-colors hover:bg-surface-bright"
           >
-            Discard
+            Descartar
           </button>
           <button
             type="button"
             className="brand-gradient rounded-xl px-8 py-2.5 text-sm font-bold text-on-surface shadow-lg shadow-primary/20 transition-all active:scale-95"
           >
-            Publish DNA Changes
+            Publicar Alteracoes
           </button>
         </div>
       </div>

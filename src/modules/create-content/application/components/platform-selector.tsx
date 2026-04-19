@@ -19,7 +19,7 @@ export function PlatformSelector({ selected, onToggle }: PlatformSelectorProps) 
   return (
     <div className="rounded-xl bg-surface-container p-6 ghost-border">
       <label className="mb-6 block text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">
-        Target Platforms
+        Plataformas Alvo
       </label>
 
       <div className="grid grid-cols-2 gap-3">

@@ -29,7 +29,7 @@ export default function CreateContentPage() {
 
   return (
     <div className="flex-1 px-6 pb-24 pt-12 md:px-8">
-      <div className="mx-auto w-full max-w-6xl">
+      <div className="w-full max-w-6xl">
         <CreationHeader />
 
         <CreationTabs activeTab={activeTab} onTabChange={setActiveTab} />

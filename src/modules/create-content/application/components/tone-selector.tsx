@@ -15,7 +15,7 @@ export function ToneSelector({ value, onChange }: ToneSelectorProps) {
         htmlFor="tone-select"
         className="mb-4 block text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant"
       >
-        Persona & Tone
+        Persona & Tom
       </label>
       <select
         id="tone-select"

@@ -14,10 +14,10 @@ export interface ToneOption {
 }
 
 export const TONE_OPTIONS: ToneOption[] = [
-  { value: 'editorial-authority', label: 'Editorial Authority' },
-  { value: 'hype', label: 'Hype / High Energy' },
-  { value: 'minimalist', label: 'Minimalist / Stoic' },
-  { value: 'technical', label: 'Technical / Deep Dive' },
+  { value: 'editorial-authority', label: 'Autoridade Editorial' },
+  { value: 'hype', label: 'Hype / Alta Energia' },
+  { value: 'minimalist', label: 'Minimalista / Estoico' },
+  { value: 'technical', label: 'Tecnico / Deep Dive' },
 ]
 
 export const MAX_TOKENS = 2500
