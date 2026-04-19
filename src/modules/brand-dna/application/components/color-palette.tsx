@@ -11,9 +11,9 @@ interface ColorPaletteProps {
 }
 
 function contrastText(hex: string): string {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
+  const r = Number.parseInt(hex.slice(1, 3), 16)
+  const g = Number.parseInt(hex.slice(3, 5), 16)
+  const b = Number.parseInt(hex.slice(5, 7), 16)
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
   return luminance > 0.5 ? '#1a1a1d' : '#f9f5f8'
 }
@@ -122,7 +122,7 @@ function HexInput({
         onClick={handleSubmit}
         className="rounded-lg bg-surface-bright px-3 py-2 text-xs font-bold text-on-surface transition-colors hover:bg-primary hover:text-on-surface"
       >
-        Add
+        Adicionar
       </button>
     </div>
   )
@@ -148,7 +148,7 @@ function PaletteSuggestions({
   }, [shuffleKey])
 
   function handleApply(paletteColors: string[]) {
-    const labels = ['Primary', 'Secondary', 'Accent', 'Highlight', 'Base']
+    const labels = ['Primaria', 'Secundaria', 'Destaque', 'Realce', 'Base']
     onApply(
       paletteColors.map((hex, i) => ({
         id: crypto.randomUUID(),
@@ -162,7 +162,7 @@ function PaletteSuggestions({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-          Or pick a preset
+          Ou escolha um preset
         </p>
         <button
           type="button"
@@ -170,7 +170,7 @@ function PaletteSuggestions({
           className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant transition-colors hover:text-on-surface"
         >
           <RefreshCw size={10} />
-          Shuffle
+          Embaralhar
         </button>
       </div>
       <div className="grid grid-cols-2 gap-2">
@@ -214,7 +214,7 @@ export function ColorPalette({ colors, onColorsChange }: Readonly<ColorPalettePr
   function handleAdd(hex: string) {
     const newColor: BrandColor = {
       id: crypto.randomUUID(),
-      label: `Color ${colors.length + 1}`,
+      label: `Cor ${colors.length + 1}`,
       hex,
     }
     onColorsChange([...colors, newColor])
@@ -223,7 +223,7 @@ export function ColorPalette({ colors, onColorsChange }: Readonly<ColorPalettePr
   function handleAddViaColorPicker() {
     const newColor: BrandColor = {
       id: crypto.randomUUID(),
-      label: `Color ${colors.length + 1}`,
+      label: `Cor ${colors.length + 1}`,
       hex: '#6366f1',
     }
     onColorsChange([...colors, newColor])
@@ -233,10 +233,10 @@ export function ColorPalette({ colors, onColorsChange }: Readonly<ColorPalettePr
     <section className="rounded-xl border border-outline-variant/10 bg-surface-container p-8 shadow-sm">
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-sm font-bold uppercase tracking-widest text-primary">
-          Color Palette
+          Paleta de Cores
         </h3>
         <span className="text-[10px] text-on-surface-variant">
-          {colors.length} color{colors.length !== 1 ? 's' : ''}
+          {colors.length} {colors.length !== 1 ? 'cores' : 'cor'}
         </span>
       </div>
 
@@ -257,7 +257,7 @@ export function ColorPalette({ colors, onColorsChange }: Readonly<ColorPalettePr
         >
           <Plus size={16} className="mb-1 text-on-surface-variant" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">
-            Add Color
+            Adicionar
           </span>
         </button>
       </div>
@@ -271,7 +271,7 @@ export function ColorPalette({ colors, onColorsChange }: Readonly<ColorPalettePr
           className="flex w-full items-center justify-between text-on-surface-variant transition-colors hover:text-on-surface"
         >
           <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-            Palette Suggestions
+            Sugestoes de Paleta
           </span>
           <ChevronDown
             size={14}

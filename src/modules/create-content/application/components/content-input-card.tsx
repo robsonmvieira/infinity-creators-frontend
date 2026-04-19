@@ -15,7 +15,7 @@ export function ContentInputCard({ value, onChange }: Readonly<ContentInputCardP
     <div className="col-span-12 lg:col-span-8">
       <div className="flex min-h-[400px] flex-col rounded-xl bg-surface-container p-8 ghost-border">
         <label htmlFor="content-input" className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">
-          Input Context & Details
+          Contexto & Detalhes
         </label>
 
         <textarea
@@ -24,7 +24,7 @@ export function ContentInputCard({ value, onChange }: Readonly<ContentInputCardP
           onChange={(e) => onChange(e.target.value)}
           maxLength={MAX_TOKENS}
           className="flex-1 resize-none border-none bg-transparent text-xl font-medium leading-relaxed text-on-surface placeholder:text-surface-bright focus:ring-0 focus:outline-none"
-          placeholder="What are we building today? Paste a changelog, share a raw idea, or describe the vibe of your next viral post..."
+          placeholder="O que vamos criar hoje? Cole um changelog, compartilhe uma ideia crua, ou descreva o vibe do seu proximo post viral..."
         />
 
         <div className="mt-8 flex items-center justify-between border-t border-outline-variant/15 pt-8">
@@ -34,14 +34,14 @@ export function ContentInputCard({ value, onChange }: Readonly<ContentInputCardP
               className="flex items-center gap-2 text-xs font-bold text-on-surface-variant transition-colors hover:text-primary"
             >
               <Paperclip size={14} />
-              <span>ATTACH ASSETS</span>
+              <span>ANEXAR ARQUIVOS</span>
             </button>
             <button
               type="button"
               className="flex items-center gap-2 text-xs font-bold text-on-surface-variant transition-colors hover:text-primary"
             >
               <Wand2 size={14} />
-              <span>ENHANCE PROMPT</span>
+              <span>MELHORAR PROMPT</span>
             </button>
           </div>
           <span className="font-mono text-xs uppercase text-on-surface-variant">

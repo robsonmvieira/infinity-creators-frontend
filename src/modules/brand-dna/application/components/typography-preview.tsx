@@ -64,7 +64,7 @@ function FontDropdown({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search fonts..."
+              placeholder="Buscar fontes..."
               className="flex-1 border-none bg-transparent text-xs text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-0"
             />
           </div>
@@ -90,7 +90,7 @@ function FontDropdown({
             ))}
             {filtered.length === 0 && (
               <p className="px-3 py-2 text-xs text-on-surface-variant">
-                No fonts found for &quot;{search}&quot;
+                Nenhuma fonte encontrada para &quot;{search}&quot;
               </p>
             )}
           </div>
@@ -98,7 +98,7 @@ function FontDropdown({
           <div className="border-t border-outline-variant/10 pt-2">
             <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-outline-variant/20 px-3 py-2 text-xs text-on-surface-variant transition-colors hover:border-primary/50 hover:text-on-surface">
               <Upload size={12} />
-              <span>Upload font (.ttf, .otf, .woff2)</span>
+              <span>Enviar fonte (.ttf, .otf, .woff2)</span>
               <input
                 type="file"
                 accept=".ttf,.otf,.woff,.woff2"
@@ -122,7 +122,7 @@ function FontDropdown({
 
 export function TypographyPreview({ fonts, onFontChange }: Readonly<TypographyPreviewProps>) {
   const [previewText, setPreviewText] = useState(
-    'Type something to preview your brand typography...',
+    'Digite algo para visualizar a tipografia da sua marca...',
   )
 
   const headlineFont = fonts.find((f) => f.role === 'headline')
@@ -132,13 +132,13 @@ export function TypographyPreview({ fonts, onFontChange }: Readonly<TypographyPr
     <section className="rounded-xl border border-outline-variant/10 bg-surface-container p-8 shadow-sm">
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-sm font-bold uppercase tracking-widest text-primary">
-          Typography
+          Tipografia
         </h3>
         <div className="flex items-center gap-3">
           {headlineFont && (
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                Headline
+                Titulo
               </span>
               <FontDropdown
                 font={headlineFont}
@@ -149,7 +149,7 @@ export function TypographyPreview({ fonts, onFontChange }: Readonly<TypographyPr
           {bodyFont && (
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                Body
+                Corpo
               </span>
               <FontDropdown
                 font={bodyFont}
@@ -167,7 +167,7 @@ export function TypographyPreview({ fonts, onFontChange }: Readonly<TypographyPr
           type="text"
           value={previewText}
           onChange={(e) => setPreviewText(e.target.value)}
-          placeholder="Type to preview..."
+          placeholder="Digite para visualizar..."
           className="flex-1 border-none bg-transparent text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-0"
         />
       </div>
@@ -176,19 +176,19 @@ export function TypographyPreview({ fonts, onFontChange }: Readonly<TypographyPr
       <div className="space-y-4 rounded-lg bg-surface-container-low p-6">
         <div>
           <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-            Headline &middot; {headlineFont?.fontName ?? 'Inter'} Black
+            Titulo &middot; {headlineFont?.fontName ?? 'Inter'} Black
           </p>
           <p className="text-3xl font-black leading-tight tracking-tight text-on-surface">
-            {previewText || 'Type something to preview...'}
+            {previewText || 'Digite algo para visualizar...'}
           </p>
         </div>
 
         <div className="border-t border-outline-variant/10 pt-4">
           <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-            Body &middot; {bodyFont?.fontName ?? 'Inter'} Regular
+            Corpo &middot; {bodyFont?.fontName ?? 'Inter'} Regular
           </p>
           <p className="text-base font-normal leading-relaxed text-on-surface">
-            {previewText || 'Type something to preview...'}
+            {previewText || 'Digite algo para visualizar...'}
           </p>
         </div>
       </div>

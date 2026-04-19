@@ -14,7 +14,7 @@ export function ReferencePosts({ posts }: Readonly<ReferencePostsProps>) {
   return (
     <div>
       <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-        Gold Standard References
+        Referencias de Ouro
       </p>
 
       <div className="space-y-3">

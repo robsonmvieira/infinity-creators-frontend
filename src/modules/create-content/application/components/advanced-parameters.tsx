@@ -14,7 +14,7 @@ export function AdvancedParameters() {
         className="flex w-full items-center justify-between text-on-surface-variant transition-colors hover:text-on-surface"
       >
         <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-          Advanced Parameters
+          Parametros Avancados
         </span>
         <ChevronDown
           size={18}
@@ -25,7 +25,7 @@ export function AdvancedParameters() {
       {isOpen && (
         <div className="mt-6 space-y-4 border-t border-outline-variant/15 pt-6">
           <p className="text-xs text-on-surface-variant">
-            Advanced configuration options coming soon.
+            Opcoes de configuracao avancada em breve.
           </p>
         </div>
       )}

@@ -28,12 +28,12 @@ export default function BrandDnaPage() {
   const [sliders, setSliders] = useState<TonalitySlider[]>(DEFAULT_TONALITY)
   const [colors, setColors] = useState<BrandColor[]>(DEFAULT_COLORS)
   const [fonts, setFonts] = useState<FontSelection[]>(DEFAULT_FONTS)
-  const [persona, setPersona] = useState('The Visionary Architect')
+  const [persona, setPersona] = useState('O Arquiteto Visionario')
   const [alwaysUse, setAlwaysUse] = useState(
-    'Active verbs, kinetic metaphors, editorial pacing.',
+    'Verbos ativos, metaforas cineticas, ritmo editorial.',
   )
   const [neverUse, setNeverUse] = useState(
-    'Buzzwords, emojis in headlines, passive voice.',
+    'Jargoes, emojis em titulos, voz passiva.',
   )
 
   const handleSliderChange = useCallback((id: string, value: number) => {
@@ -67,12 +67,12 @@ export default function BrandDnaPage() {
           <section className="rounded-xl border border-outline-variant/10 bg-surface-container p-8 shadow-sm">
             <div className="mb-8 flex items-center justify-between">
               <h3 className="text-sm font-bold uppercase tracking-widest text-secondary">
-                Voice DNA & Tonality
+                Voz DNA & Tonalidade
               </h3>
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 animate-pulse rounded-full bg-tertiary shadow-[0_0_8px_#ffb148]" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-                  AI Engine Active
+                  Motor IA Ativo
                 </span>
               </div>
             </div>
