@@ -8,17 +8,18 @@ interface ContentInputCardProps {
   onChange: (value: string) => void
 }
 
-export function ContentInputCard({ value, onChange }: ContentInputCardProps) {
-  const tokenCount = value.length
+export function ContentInputCard({ value, onChange }: Readonly<ContentInputCardProps>) {
+  const charCount = value.length
 
   return (
     <div className="col-span-12 lg:col-span-8">
       <div className="flex min-h-[400px] flex-col rounded-xl bg-surface-container p-8 ghost-border">
-        <label className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">
+        <label htmlFor="content-input" className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">
           Input Context & Details
         </label>
 
         <textarea
+          id="content-input"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           maxLength={MAX_TOKENS}
@@ -44,7 +45,7 @@ export function ContentInputCard({ value, onChange }: ContentInputCardProps) {
             </button>
           </div>
           <span className="font-mono text-xs uppercase text-on-surface-variant">
-            {tokenCount} / {MAX_TOKENS} tokens
+            {charCount} / {MAX_TOKENS} tokens
           </span>
         </div>
       </div>

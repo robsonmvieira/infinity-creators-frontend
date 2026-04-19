@@ -1,7 +1,6 @@
 'use client'
 
-import { Camera, AtSign, X, Music } from 'lucide-react'
-import { CheckCircle } from 'lucide-react'
+import { Camera, AtSign, X, Music, CheckCircle } from 'lucide-react'
 import type { Platform } from '../types'
 
 const PLATFORMS: { id: Platform; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
