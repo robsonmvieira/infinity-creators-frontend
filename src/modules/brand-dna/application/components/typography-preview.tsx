@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ChevronDown, Upload, Search, Type } from 'lucide-react'
 import { GOOGLE_FONTS_POPULAR } from '../types'
 import type { FontSelection } from '../types'
@@ -19,13 +19,26 @@ function FontDropdown({
 }>) {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+    function handleClickOutside(e: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+        setSearch('')
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
 
   const filtered = GOOGLE_FONTS_POPULAR.filter((f) =>
     f.toLowerCase().includes(search.toLowerCase()),
   )
 
   return (
-    <div className="relative">
+    <div ref={wrapperRef} className="relative">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}

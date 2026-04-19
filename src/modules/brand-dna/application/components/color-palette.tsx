@@ -32,9 +32,10 @@ function ColorSwatch({
   const textColor = contrastText(color.hex)
 
   function handleCopy() {
-    navigator.clipboard.writeText(color.hex)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    navigator.clipboard.writeText(color.hex).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    })
   }
 
   return (
@@ -81,6 +82,7 @@ function ColorSwatch({
           type="text"
           value={color.label}
           onChange={(e) => onUpdate(color.hex, e.target.value)}
+          aria-label={`Label for color ${color.hex}`}
           className="w-16 border-none bg-transparent p-0 text-[10px] font-bold uppercase text-on-surface-variant focus:outline-none focus:ring-0"
         />
         <span className="font-mono text-[10px] text-on-surface-variant">
