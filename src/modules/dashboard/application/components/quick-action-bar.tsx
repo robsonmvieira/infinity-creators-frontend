@@ -9,7 +9,7 @@ const ACTIONS = [
 
 export function QuickActionBar() {
   return (
-    <div className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2">
+    <div className="fixed bottom-8 left-1/2 z-50 hidden -translate-x-1/2 md:block">
       <div className="glass ghost-border flex items-center gap-6 rounded-full px-6 py-3 shadow-2xl">
         {ACTIONS.map((action, i) => {
           const Icon = action.icon

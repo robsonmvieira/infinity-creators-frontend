@@ -5,12 +5,6 @@ export interface StatCard {
   change: number
 }
 
-export interface ScheduledPost {
-  title: string
-  description: string
-  imageAlt: string
-}
-
 export type ContentStatus = 'published' | 'scheduled' | 'draft'
 
 export interface RecentContent {

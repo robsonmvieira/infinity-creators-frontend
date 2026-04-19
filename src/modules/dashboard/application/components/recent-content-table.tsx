@@ -78,7 +78,7 @@ export function RecentContentTable({ items }: Readonly<RecentContentTableProps>)
                 <td className="px-6 py-4 text-right">
                   <button
                     type="button"
-                    aria-label={`Actions for ${item.title}`}
+                    aria-label={`Acoes para ${item.title}`}
                     className="cursor-pointer text-on-surface-variant transition-colors hover:text-on-surface"
                   >
                     <MoreVertical size={18} />
