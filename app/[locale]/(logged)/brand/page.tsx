@@ -5,9 +5,11 @@ import {
   BrandPageHeader,
   LogoUpload,
   ColorPalette,
+  ImageStyleSelector,
   TypographyPreview,
   TonalitySliders,
   PersonaInput,
+  AudienceTextarea,
   WritingRules,
   ReferencePosts,
   SaveBar,
@@ -16,25 +18,26 @@ import {
   DEFAULT_TONALITY,
   DEFAULT_COLORS,
   DEFAULT_FONTS,
-  DEFAULT_REFERENCES,
+  DEFAULT_PERSONA,
+  DEFAULT_WRITING_RULES,
 } from '@modules/brand-dna/application/types'
 import type {
   TonalitySlider,
-  BrandColor,
+  BrandColors,
   FontSelection,
+  Persona,
+  ImageStyle,
+  WritingRules as WritingRulesType,
 } from '@modules/brand-dna/application/types'
 
 export default function BrandDnaPage() {
   const [sliders, setSliders] = useState<TonalitySlider[]>(DEFAULT_TONALITY)
-  const [colors, setColors] = useState<BrandColor[]>(DEFAULT_COLORS)
+  const [colors, setColors] = useState<BrandColors>(DEFAULT_COLORS)
   const [fonts, setFonts] = useState<FontSelection[]>(DEFAULT_FONTS)
-  const [persona, setPersona] = useState('O Arquiteto Visionario')
-  const [alwaysUse, setAlwaysUse] = useState(
-    'Verbos ativos, metaforas cineticas, ritmo editorial.',
-  )
-  const [neverUse, setNeverUse] = useState(
-    'Jargoes, emojis em titulos, voz passiva.',
-  )
+  const [persona, setPersona] = useState<Persona>(DEFAULT_PERSONA)
+  const [audience, setAudience] = useState('')
+  const [writingRules, setWritingRules] = useState<WritingRulesType>(DEFAULT_WRITING_RULES)
+  const [imageStyle, setImageStyle] = useState<ImageStyle>('photographic')
 
   const handleSliderChange = useCallback((id: string, value: number) => {
     setSliders((prev) =>
@@ -51,6 +54,19 @@ export default function BrandDnaPage() {
     [],
   )
 
+  const handleApplyRule = useCallback(
+    (rule: string, target: 'always' | 'never') => {
+      setWritingRules((prev) => ({
+        ...prev,
+        [target === 'always' ? 'alwaysUse' : 'neverUse']: [
+          ...prev[target === 'always' ? 'alwaysUse' : 'neverUse'],
+          rule,
+        ],
+      }))
+    },
+    [],
+  )
+
   return (
     <div className="flex-1 overflow-y-auto p-6 pb-12 no-scrollbar lg:p-12">
       <BrandPageHeader />
@@ -60,6 +76,7 @@ export default function BrandDnaPage() {
         <div className="w-full space-y-8 lg:w-80 lg:shrink-0">
           <LogoUpload />
           <ColorPalette colors={colors} onColorsChange={setColors} />
+          <ImageStyleSelector value={imageStyle} onChange={setImageStyle} />
         </div>
 
         {/* Right Column: Voice DNA + Typography — fills remaining space */}
@@ -84,14 +101,16 @@ export default function BrandDnaPage() {
 
             <PersonaInput value={persona} onChange={setPersona} />
 
+            <AudienceTextarea value={audience} onChange={setAudience} />
+
             <WritingRules
-              alwaysUse={alwaysUse}
-              neverUse={neverUse}
-              onAlwaysUseChange={setAlwaysUse}
-              onNeverUseChange={setNeverUse}
+              alwaysUse={writingRules.alwaysUse}
+              neverUse={writingRules.neverUse}
+              onAlwaysUseChange={(rules) => setWritingRules((prev) => ({ ...prev, alwaysUse: rules }))}
+              onNeverUseChange={(rules) => setWritingRules((prev) => ({ ...prev, neverUse: rules }))}
             />
 
-            <ReferencePosts posts={DEFAULT_REFERENCES} />
+            <ReferencePosts onApplyRule={handleApplyRule} />
           </section>
 
           <TypographyPreview fonts={fonts} onFontChange={handleFontChange} />

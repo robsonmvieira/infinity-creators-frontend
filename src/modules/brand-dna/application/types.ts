@@ -1,3 +1,13 @@
+/* ── Persona ───────────────────────────────────────── */
+
+export interface Persona {
+  name: string
+  bio: string
+  styleReferences: string[]
+}
+
+/* ── Tonality ──────────────────────────────────────── */
+
 export interface TonalitySlider {
   id: string
   labelLeft: string
@@ -5,11 +15,69 @@ export interface TonalitySlider {
   value: number
 }
 
-export interface BrandColor {
-  id: string
-  label: string
-  hex: string
+/* ── Writing Rules ─────────────────────────────────── */
+
+export interface WritingRules {
+  alwaysUse: string[]
+  neverUse: string[]
 }
+
+/* ── References ────────────────────────────────────── */
+
+export type SourceType = 'notion' | 'x' | 'manual' | 'url'
+export type PatternStatus = 'suggested' | 'applied' | 'dismissed'
+
+export interface ReferenceItem {
+  id: string
+  title: string
+  content: string
+  sourceType: SourceType
+  sourceUrl?: string
+  annotation: string
+  tags: { label: string; variant: 'primary' | 'neutral' | 'danger' }[]
+}
+
+export interface LearnedPattern {
+  id: string
+  text: string
+  edits: number
+  status: PatternStatus
+  appliedRuleId: string | null
+}
+
+/* ── Visual Identity ───────────────────────────────── */
+
+export interface BrandLogo {
+  url: string
+  variants: {
+    dark?: string
+    light?: string
+  }
+}
+
+export interface BrandColors {
+  brand: string
+  background: string
+  text: string
+}
+
+export type BrandColorRole = keyof BrandColors
+
+/* ── Image Style ───────────────────────────────────── */
+
+export type ImageStyle = 'photographic' | 'illustration' | '3d-isometric'
+
+export interface ImageStyleOption {
+  value: ImageStyle
+  label: string
+  description: string
+}
+
+export const IMAGE_STYLE_OPTIONS: ImageStyleOption[] = [
+  { value: 'photographic', label: 'Fotográfico', description: 'Fotos reais de workspace, pessoas, café' },
+  { value: 'illustration', label: 'Ilustração', description: 'Ilustrações flat/vetoriais de cenários' },
+  { value: '3d-isometric', label: '3D Isométrico', description: 'Cenas 3D isométricas de tech' },
+]
 
 export interface FontSelection {
   role: 'headline' | 'body'
@@ -17,24 +85,46 @@ export interface FontSelection {
   source: 'google' | 'custom'
 }
 
-export interface ReferencePost {
+export interface PalettePreset {
   id: string
-  title: string
-  source: string
-  lastUpdated: string
-  icon: 'article' | 'campaign'
+  name: string
+  colors: string[]
 }
 
-export const DEFAULT_COLORS: BrandColor[] = [
-  { id: '1', label: 'Primary', hex: '#a3a6ff' },
-  { id: '2', label: 'Secondary', hex: '#ff67ad' },
-  { id: '3', label: 'Accent', hex: '#ffb148' },
-]
+/* ── Defaults ──────────────────────────────────────── */
+
+export const DEFAULT_PERSONA: Persona = {
+  name: 'O Arquiteto Visionário',
+  bio: '',
+  styleReferences: [],
+}
+
+export const DEFAULT_WRITING_RULES: WritingRules = {
+  alwaysUse: ['Verbos ativos', 'Metáforas cinéticas', 'Ritmo editorial'],
+  neverUse: ['Jargões', 'Emojis em títulos', 'Voz passiva'],
+}
+
+export const DEFAULT_COLORS: BrandColors = {
+  brand: '#a3a6ff',
+  background: '#1a1a1d',
+  text: '#f9f5f8',
+}
 
 export const DEFAULT_FONTS: FontSelection[] = [
   { role: 'headline', fontName: 'Inter', source: 'google' },
   { role: 'body', fontName: 'Inter', source: 'google' },
 ]
+
+export const DEFAULT_TONALITY: TonalitySlider[] = [
+  { id: 'formality', labelLeft: 'Formal', labelRight: 'Casual', value: 65 },
+  { id: 'professionalism', labelLeft: 'Profissional', labelRight: 'Espirituoso', value: 30 },
+  { id: 'detail', labelLeft: 'Minimalista', labelRight: 'Detalhado', value: 80 },
+]
+
+export const DEFAULT_LOGO: BrandLogo = {
+  url: '',
+  variants: {},
+}
 
 export const GOOGLE_FONTS_POPULAR = [
   'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Poppins',
@@ -44,12 +134,6 @@ export const GOOGLE_FONTS_POPULAR = [
   'Fira Sans', 'Rubik', 'Karla', 'Josefin Sans', 'Bitter',
   'Mulish', 'Quicksand', 'Lexend', 'Cabin', 'Archivo',
 ] as const
-
-export interface PalettePreset {
-  id: string
-  name: string
-  colors: string[]
-}
 
 export const PALETTE_PRESETS: PalettePreset[] = [
   { id: 'p01', name: 'Sunset Editorial', colors: ['#4a1942', '#c9b458', '#d4a843', '#e07b39', '#e84d6e'] },
@@ -88,27 +172,4 @@ export const PALETTE_PRESETS: PalettePreset[] = [
   { id: 'p34', name: 'Monochrome', colors: ['#1a1a1a', '#404040', '#737373', '#a6a6a6', '#d9d9d9'] },
   { id: 'p35', name: 'Sunset Beach', colors: ['#264653', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51'] },
   { id: 'p36', name: 'Retro Wave', colors: ['#2b2d42', '#8d99ae', '#edf2f4', '#ef233c', '#d90429'] },
-]
-
-export const DEFAULT_TONALITY: TonalitySlider[] = [
-  { id: 'formality', labelLeft: 'Formal', labelRight: 'Casual', value: 65 },
-  { id: 'professionalism', labelLeft: 'Profissional', labelRight: 'Espirituoso', value: 30 },
-  { id: 'detail', labelLeft: 'Minimalista', labelRight: 'Detalhado', value: 80 },
-]
-
-export const DEFAULT_REFERENCES: ReferencePost[] = [
-  {
-    id: '1',
-    title: 'Manifesto: O Futuro da Tecnologia para Criadores',
-    source: 'Vinculado via Notion',
-    lastUpdated: 'Atualizado ha 2 dias',
-    icon: 'article',
-  },
-  {
-    id: '2',
-    title: 'Thread no X: Rebranding Infinity',
-    source: 'Importado do X',
-    lastUpdated: 'Atualizado ha 1 semana',
-    icon: 'campaign',
-  },
 ]
