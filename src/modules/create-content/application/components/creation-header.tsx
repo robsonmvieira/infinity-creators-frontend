@@ -1,16 +1,12 @@
 export function CreationHeader() {
   return (
-    <div className="mb-12">
-      <div className="mb-2 flex items-center gap-3">
-        <div className="h-2 w-2 rounded-full bg-tertiary pulse-orb" />
-        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-tertiary">
-          Nova Sessao Criativa
-        </span>
-      </div>
-      <h2 className="text-5xl font-black leading-tight tracking-tight text-on-surface">
-        De vida as suas <br />
-        <span className="text-primary">ideias.</span>
+    <div className="mb-8">
+      <h2 className="text-3xl font-black tracking-tight text-on-surface">
+        Criar Conteúdo
       </h2>
+      <p className="mt-2 text-sm text-on-surface-variant">
+        Escreva, cole ou grave. A IA adapta para cada plataforma.
+      </p>
     </div>
   )
 }
