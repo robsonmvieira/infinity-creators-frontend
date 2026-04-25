@@ -1,14 +1,20 @@
 'use client'
 
 import { useState, useRef, useMemo } from 'react'
-import { Plus, X, Copy, Check, ChevronDown, RefreshCw } from 'lucide-react'
+import { Copy, Check, ChevronDown, RefreshCw } from 'lucide-react'
 import { PALETTE_PRESETS } from '../types'
-import type { BrandColor } from '../types'
+import type { BrandColors, BrandColorRole } from '../types'
 
 interface ColorPaletteProps {
-  colors: BrandColor[]
-  onColorsChange: (colors: BrandColor[]) => void
+  colors: BrandColors
+  onColorsChange: (colors: BrandColors) => void
 }
+
+const COLOR_ROLES: { key: BrandColorRole; label: string }[] = [
+  { key: 'brand', label: 'Cor da marca' },
+  { key: 'background', label: 'Cor de fundo' },
+  { key: 'text', label: 'Cor do texto' },
+]
 
 function contrastText(hex: string): string {
   const r = Number.parseInt(hex.slice(1, 3), 16)
@@ -19,20 +25,20 @@ function contrastText(hex: string): string {
 }
 
 function ColorSwatch({
-  color,
-  onUpdate,
-  onRemove,
+  hex,
+  label,
+  onChange,
 }: Readonly<{
-  color: BrandColor
-  onUpdate: (hex: string, label: string) => void
-  onRemove: () => void
+  hex: string
+  label: string
+  onChange: (hex: string) => void
 }>) {
   const pickerRef = useRef<HTMLInputElement>(null)
   const [copied, setCopied] = useState(false)
-  const textColor = contrastText(color.hex)
+  const textColor = contrastText(hex)
 
   function handleCopy() {
-    navigator.clipboard.writeText(color.hex).then(() => {
+    navigator.clipboard.writeText(hex).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     })
@@ -43,87 +49,40 @@ function ColorSwatch({
       <button
         type="button"
         onClick={() => pickerRef.current?.click()}
-        className="h-16 w-full cursor-pointer rounded-lg transition-transform hover:scale-[1.02]"
-        style={{ backgroundColor: color.hex }}
+        className="h-16 w-full cursor-pointer rounded-lg border border-outline-variant/10 transition-transform hover:scale-[1.02]"
+        style={{ backgroundColor: hex }}
+        aria-label={`Escolher ${label}`}
       />
 
       <input
         ref={pickerRef}
         type="color"
-        value={color.hex}
-        onChange={(e) => onUpdate(e.target.value, color.label)}
+        value={hex}
+        onChange={(e) => onChange(e.target.value)}
         className="invisible absolute h-0 w-0"
-        aria-label={`Pick color for ${color.label}`}
+        aria-label={`Color picker para ${label}`}
       />
 
-      <div className="absolute right-1 top-1 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="absolute right-1 top-1 opacity-0 transition-opacity group-hover:opacity-100">
         <button
           type="button"
           onClick={handleCopy}
-          className="flex h-6 w-6 items-center justify-center rounded-md backdrop-blur-sm"
-          style={{ backgroundColor: `${color.hex}dd`, color: textColor }}
-          aria-label="Copy hex code"
+          className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md backdrop-blur-sm"
+          style={{ backgroundColor: `${hex}dd`, color: textColor }}
+          aria-label="Copiar hex"
         >
           {copied ? <Check size={12} /> : <Copy size={12} />}
         </button>
-        <button
-          type="button"
-          onClick={onRemove}
-          className="flex h-6 w-6 items-center justify-center rounded-md backdrop-blur-sm"
-          style={{ backgroundColor: `${color.hex}dd`, color: textColor }}
-          aria-label="Remove color"
-        >
-          <X size={12} />
-        </button>
       </div>
 
-      <div className="mt-1.5 flex items-center justify-between">
-        <input
-          type="text"
-          value={color.label}
-          onChange={(e) => onUpdate(color.hex, e.target.value)}
-          aria-label={`Label for color ${color.hex}`}
-          className="w-16 border-none bg-transparent p-0 text-[10px] font-bold uppercase text-on-surface-variant focus:outline-none focus:ring-0"
-        />
-        <span className="font-mono text-[10px] text-on-surface-variant">
-          {color.hex}
-        </span>
+      <div className="mt-1.5 text-center">
+        <p className="text-[10px] font-bold uppercase text-on-surface-variant">
+          {label}
+        </p>
+        <p className="font-mono text-[10px] text-on-surface-variant">
+          {hex}
+        </p>
       </div>
-    </div>
-  )
-}
-
-function HexInput({
-  onAdd,
-}: Readonly<{ onAdd: (hex: string) => void }>) {
-  const [hex, setHex] = useState('')
-
-  function handleSubmit() {
-    const cleaned = hex.startsWith('#') ? hex : `#${hex}`
-    if (/^#[0-9a-fA-F]{6}$/.test(cleaned)) {
-      onAdd(cleaned)
-      setHex('')
-    }
-  }
-
-  return (
-    <div className="flex gap-2">
-      <input
-        type="text"
-        value={hex}
-        onChange={(e) => setHex(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-        placeholder="#000000"
-        maxLength={7}
-        className="flex-1 rounded-lg border-none bg-surface-container-low px-3 py-2 font-mono text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:ring-1 focus:ring-primary"
-      />
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="rounded-lg bg-surface-bright px-3 py-2 text-xs font-bold text-on-surface transition-colors hover:bg-primary hover:text-on-surface"
-      >
-        Adicionar
-      </button>
     </div>
   )
 }
@@ -139,7 +98,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 function PaletteSuggestions({
   onApply,
-}: Readonly<{ onApply: (colors: BrandColor[]) => void }>) {
+}: Readonly<{ onApply: (colors: BrandColors) => void }>) {
   const [shuffleKey, setShuffleKey] = useState(0)
 
   const palettes = useMemo(() => {
@@ -148,14 +107,11 @@ function PaletteSuggestions({
   }, [shuffleKey])
 
   function handleApply(paletteColors: string[]) {
-    const labels = ['Primaria', 'Secundaria', 'Destaque', 'Realce', 'Base']
-    onApply(
-      paletteColors.map((hex, i) => ({
-        id: crypto.randomUUID(),
-        label: labels[i] ?? `Color ${i + 1}`,
-        hex,
-      })),
-    )
+    onApply({
+      brand: paletteColors[0] ?? '#a3a6ff',
+      background: paletteColors[1] ?? '#1a1a1d',
+      text: paletteColors[2] ?? '#f9f5f8',
+    })
   }
 
   return (
@@ -167,7 +123,7 @@ function PaletteSuggestions({
         <button
           type="button"
           onClick={() => setShuffleKey((k) => k + 1)}
-          className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant transition-colors hover:text-on-surface"
+          className="flex cursor-pointer items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant transition-colors hover:text-on-surface"
         >
           <RefreshCw size={10} />
           Embaralhar
@@ -179,10 +135,10 @@ function PaletteSuggestions({
             key={palette.id}
             type="button"
             onClick={() => handleApply(palette.colors)}
-            className="group overflow-hidden rounded-lg transition-transform hover:scale-[1.03]"
+            className="group cursor-pointer overflow-hidden rounded-lg transition-transform hover:scale-[1.03]"
           >
             <div className="flex h-8">
-              {palette.colors.map((hex, i) => (
+              {palette.colors.slice(0, 3).map((hex, i) => (
                 <div
                   key={`${palette.id}-${i}`}
                   className="flex-1"
@@ -203,75 +159,35 @@ function PaletteSuggestions({
 export function ColorPalette({ colors, onColorsChange }: Readonly<ColorPaletteProps>) {
   const [showSuggestions, setShowSuggestions] = useState(false)
 
-  function handleUpdate(id: string, hex: string, label: string) {
-    onColorsChange(colors.map((c) => (c.id === id ? { ...c, hex, label } : c)))
-  }
-
-  function handleRemove(id: string) {
-    onColorsChange(colors.filter((c) => c.id !== id))
-  }
-
-  function handleAdd(hex: string) {
-    const newColor: BrandColor = {
-      id: crypto.randomUUID(),
-      label: `Cor ${colors.length + 1}`,
-      hex,
-    }
-    onColorsChange([...colors, newColor])
-  }
-
-  function handleAddViaColorPicker() {
-    const newColor: BrandColor = {
-      id: crypto.randomUUID(),
-      label: `Cor ${colors.length + 1}`,
-      hex: '#6366f1',
-    }
-    onColorsChange([...colors, newColor])
+  function handleColorChange(role: BrandColorRole, hex: string) {
+    onColorsChange({ ...colors, [role]: hex })
   }
 
   return (
     <section className="rounded-xl border border-outline-variant/10 bg-surface-container p-8 shadow-sm">
-      <div className="mb-6 flex items-center justify-between">
-        <h3 className="text-sm font-bold uppercase tracking-widest text-primary">
-          Paleta de Cores
-        </h3>
-        <span className="text-[10px] text-on-surface-variant">
-          {colors.length} {colors.length !== 1 ? 'cores' : 'cor'}
-        </span>
-      </div>
+      <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-primary">
+        Cores da Marca
+      </h3>
 
-      <div className="mb-4 grid grid-cols-2 gap-3">
-        {colors.map((color) => (
+      <div className="mb-4 grid grid-cols-3 gap-3">
+        {COLOR_ROLES.map((role) => (
           <ColorSwatch
-            key={color.id}
-            color={color}
-            onUpdate={(hex, label) => handleUpdate(color.id, hex, label)}
-            onRemove={() => handleRemove(color.id)}
+            key={role.key}
+            hex={colors[role.key]}
+            label={role.label}
+            onChange={(hex) => handleColorChange(role.key, hex)}
           />
         ))}
-
-        <button
-          type="button"
-          onClick={handleAddViaColorPicker}
-          className="flex h-16 w-full flex-col items-center justify-center rounded-lg border border-dashed border-outline-variant/20 bg-surface-bright transition-colors hover:border-primary/50"
-        >
-          <Plus size={16} className="mb-1 text-on-surface-variant" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">
-            Adicionar
-          </span>
-        </button>
       </div>
 
-      <HexInput onAdd={handleAdd} />
-
-      <div className="mt-6 border-t border-outline-variant/10 pt-4">
+      <div className="border-t border-outline-variant/10 pt-4">
         <button
           type="button"
           onClick={() => setShowSuggestions(!showSuggestions)}
-          className="flex w-full items-center justify-between text-on-surface-variant transition-colors hover:text-on-surface"
+          className="flex w-full cursor-pointer items-center justify-between text-on-surface-variant transition-colors hover:text-on-surface"
         >
           <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-            Sugestoes de Paleta
+            Sugestões de Paleta
           </span>
           <ChevronDown
             size={14}
