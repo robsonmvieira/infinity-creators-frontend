@@ -1,13 +1,11 @@
 'use client'
 
-import { FileText, Mic, Link, ScreenShare } from 'lucide-react'
 import type { InputTab } from '../types'
 
-const TABS: { id: InputTab; label: string; icon: React.ComponentType<{ size?: number }> }[] = [
-  { id: 'text', label: 'Texto/Ideia', icon: FileText },
-  { id: 'audio', label: 'Audio', icon: Mic },
-  { id: 'url', label: 'URL', icon: Link },
-  { id: 'screenshot', label: 'Screenshot', icon: ScreenShare },
+const TABS: { id: InputTab; label: string }[] = [
+  { id: 'text', label: 'Texto' },
+  { id: 'url', label: 'URL / Changelog' },
+  { id: 'audio', label: 'Áudio' },
 ]
 
 interface CreationTabsProps {
@@ -15,11 +13,10 @@ interface CreationTabsProps {
   onTabChange: (tab: InputTab) => void
 }
 
-export function CreationTabs({ activeTab, onTabChange }: CreationTabsProps) {
+export function CreationTabs({ activeTab, onTabChange }: Readonly<CreationTabsProps>) {
   return (
     <div className="mb-8 flex items-center gap-8 border-b border-outline-variant/15">
       {TABS.map((tab) => {
-        const Icon = tab.icon
         const isActive = activeTab === tab.id
 
         return (
@@ -27,14 +24,13 @@ export function CreationTabs({ activeTab, onTabChange }: CreationTabsProps) {
             key={tab.id}
             type="button"
             onClick={() => onTabChange(tab.id)}
-            className={`flex items-center gap-2 pb-4 px-2 text-sm font-medium transition-colors ${
+            className={`cursor-pointer px-2 pb-4 text-sm font-medium transition-colors ${
               isActive
                 ? 'border-b-2 border-primary font-bold text-primary'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            <Icon size={18} />
-            <span>{tab.label}</span>
+            {tab.label}
           </button>
         )
       })}
