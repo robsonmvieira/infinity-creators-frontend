@@ -30,80 +30,14 @@ import type { ReferenceItem, LearnedPattern, SourceType } from '../types'
 /* ── Props ─────────────────────────────────────────── */
 
 interface ReferencePostsProps {
+  anchors: ReferenceItem[]
+  antiPatterns: ReferenceItem[]
+  learnedPatterns: LearnedPattern[]
+  onAnchorsChange: (anchors: ReferenceItem[]) => void
+  onAntiPatternsChange: (antiPatterns: ReferenceItem[]) => void
+  onLearnedPatternsChange: (patterns: LearnedPattern[]) => void
   onApplyRule?: (rule: string, target: 'always' | 'never') => void
 }
-
-/* ── Seed Data ─────────────────────────────────────── */
-
-const INITIAL_ANCHORS: ReferenceItem[] = [
-  {
-    id: 'a1',
-    title: 'Manifesto: O Futuro da Tecnologia para Criadores',
-    content: '',
-    sourceType: 'notion',
-    sourceUrl: 'https://notion.so/manifesto-futuro-criadores',
-    annotation: 'Gosto do ritmo curto e como abre direto com a tese, sem enrolação.',
-    tags: [
-      { label: 'Meu texto', variant: 'primary' },
-      { label: 'Thread', variant: 'neutral' },
-    ],
-  },
-  {
-    id: 'a2',
-    title: 'Thread no X: Rebranding Infinity',
-    content: '',
-    sourceType: 'x',
-    sourceUrl: 'https://x.com/user/status/123',
-    annotation: 'A forma como constrói o argumento em 5 tweets — cada um com uma ideia só.',
-    tags: [
-      { label: 'Meu texto', variant: 'primary' },
-      { label: 'Thread', variant: 'neutral' },
-    ],
-  },
-  {
-    id: 'a3',
-    title: "Newsletter do @levelsio — 'I just shipped this'",
-    content: '',
-    sourceType: 'manual',
-    annotation: 'Ultra direto. Sem introdução. Já começa com o que fez.',
-    tags: [
-      { label: 'Referência externa', variant: 'neutral' },
-      { label: 'Newsletter', variant: 'neutral' },
-    ],
-  },
-]
-
-const INITIAL_ANTI_PATTERNS: ReferenceItem[] = [
-  {
-    id: 'ap1',
-    title: "Post genérico LinkedIn — '3 lições que aprendi como founder'",
-    content: '',
-    sourceType: 'manual',
-    annotation: 'Tom motivacional forçado, estrutura de lista preguiçosa, 🔥 em tudo.',
-    tags: [
-      { label: 'Anti-padrão', variant: 'danger' },
-      { label: 'LinkedIn', variant: 'neutral' },
-    ],
-  },
-  {
-    id: 'ap2',
-    title: "Carrossel com cara de IA — '7 dicas para escalar seu SaaS'",
-    content: '',
-    sourceType: 'manual',
-    annotation: 'Emojis como bullets, frases genéricas que servem pra qualquer nicho.',
-    tags: [
-      { label: 'Anti-padrão', variant: 'danger' },
-      { label: 'Carrossel', variant: 'neutral' },
-    ],
-  },
-]
-
-const INITIAL_PATTERNS: LearnedPattern[] = [
-  { id: 'l1', text: 'Você sempre encurta a primeira frase para < 10 palavras', edits: 8, status: 'suggested', appliedRuleId: null },
-  { id: 'l2', text: 'Você remove emojis do corpo do texto em 90% das edições', edits: 12, status: 'suggested', appliedRuleId: null },
-  { id: 'l3', text: "Você troca 'nosso' por 'meu' — prefere primeira pessoa singular", edits: 5, status: 'suggested', appliedRuleId: null },
-  { id: 'l4', text: 'Você adiciona um dado numérico quando o texto original era vago', edits: 7, status: 'suggested', appliedRuleId: null },
-]
 
 /* ── Icon Map ──────────────────────────────────────── */
 
@@ -487,53 +421,58 @@ function PatternRow({
 
 /* ── Main Component ────────────────────────────────── */
 
-export function ReferencePosts({ onApplyRule }: Readonly<ReferencePostsProps>) {
-  const [anchors, setAnchors] = useState<ReferenceItem[]>(INITIAL_ANCHORS)
-  const [antiPatterns, setAntiPatterns] = useState<ReferenceItem[]>(INITIAL_ANTI_PATTERNS)
-  const [patterns, setPatterns] = useState<LearnedPattern[]>(INITIAL_PATTERNS)
+export function ReferencePosts({
+  anchors,
+  antiPatterns,
+  learnedPatterns,
+  onAnchorsChange,
+  onAntiPatternsChange,
+  onLearnedPatternsChange,
+  onApplyRule,
+}: Readonly<ReferencePostsProps>) {
   const [addingAnchor, setAddingAnchor] = useState(false)
   const [addingAntiPattern, setAddingAntiPattern] = useState(false)
 
-  const suggestedPatterns = patterns.filter((p) => p.status === 'suggested')
+  const suggestedPatterns = learnedPatterns.filter((p) => p.status === 'suggested')
 
   const removeAnchor = useCallback((id: string) => {
-    setAnchors((prev) => prev.filter((item) => item.id !== id))
-  }, [])
+    onAnchorsChange(anchors.filter((item) => item.id !== id))
+  }, [anchors, onAnchorsChange])
 
   const removeAntiPattern = useCallback((id: string) => {
-    setAntiPatterns((prev) => prev.filter((item) => item.id !== id))
-  }, [])
+    onAntiPatternsChange(antiPatterns.filter((item) => item.id !== id))
+  }, [antiPatterns, onAntiPatternsChange])
 
   const updateAnchor = useCallback((id: string, patch: Partial<ReferenceItem>) => {
-    setAnchors((prev) => prev.map((item) => (item.id === id ? { ...item, ...patch } : item)))
-  }, [])
+    onAnchorsChange(anchors.map((item) => (item.id === id ? { ...item, ...patch } : item)))
+  }, [anchors, onAnchorsChange])
 
   const updateAntiPattern = useCallback((id: string, patch: Partial<ReferenceItem>) => {
-    setAntiPatterns((prev) => prev.map((item) => (item.id === id ? { ...item, ...patch } : item)))
-  }, [])
+    onAntiPatternsChange(antiPatterns.map((item) => (item.id === id ? { ...item, ...patch } : item)))
+  }, [antiPatterns, onAntiPatternsChange])
 
   const addAnchor = useCallback((data: Omit<ReferenceItem, 'id'>) => {
-    setAnchors((prev) => [...prev, { ...data, id: genId() }])
+    onAnchorsChange([...anchors, { ...data, id: genId() }])
     setAddingAnchor(false)
-  }, [])
+  }, [anchors, onAnchorsChange])
 
   const addAntiPattern = useCallback((data: Omit<ReferenceItem, 'id'>) => {
-    setAntiPatterns((prev) => [...prev, { ...data, id: genId() }])
+    onAntiPatternsChange([...antiPatterns, { ...data, id: genId() }])
     setAddingAntiPattern(false)
-  }, [])
+  }, [antiPatterns, onAntiPatternsChange])
 
   const applyPattern = useCallback((pattern: LearnedPattern) => {
-    setPatterns((prev) => prev.map((p) =>
+    onLearnedPatternsChange(learnedPatterns.map((p) =>
       p.id === pattern.id ? { ...p, status: 'applied' as const } : p,
     ))
     onApplyRule?.(pattern.text, 'always')
-  }, [onApplyRule])
+  }, [learnedPatterns, onLearnedPatternsChange, onApplyRule])
 
   const dismissPattern = useCallback((id: string) => {
-    setPatterns((prev) => prev.map((p) =>
+    onLearnedPatternsChange(learnedPatterns.map((p) =>
       p.id === id ? { ...p, status: 'dismissed' as const } : p,
     ))
-  }, [])
+  }, [learnedPatterns, onLearnedPatternsChange])
 
   return (
     <div className="mt-6">

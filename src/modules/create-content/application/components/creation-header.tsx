@@ -1,6 +1,6 @@
 export function CreationHeader() {
   return (
-    <div className="mb-8">
+    <div>
       <h2 className="text-3xl font-black tracking-tight text-on-surface">
         Criar Conteúdo
       </h2>

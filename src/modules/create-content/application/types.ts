@@ -330,6 +330,35 @@ export interface BrandDnaWarning {
   message: string
 }
 
+/* ── API: /generate accepted (202) ─────────────────── */
+
+export type GenerateStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
+
+export interface GenerateAcceptedResponse {
+  requestId: string
+  status: 'PENDING'
+}
+
+/* ── API: /generate poll result ────────────────────── */
+
+export interface GeneratePollResponse {
+  requestId: string
+  status: GenerateStatus
+  results: PlatformResult[] | null
+  meta: {
+    totalTokens: number
+    writeModel: string
+    routeModel: string
+    reviewModel: string
+    latencyMs: number
+    category: string
+    categorySource: 'user' | 'auto'
+  } | null
+  brandDnaVersion: string | null
+  brandDnaWarning: BrandDnaWarning | null
+  errorMessage: string | null
+}
+
 export interface GenerateResponse {
   requestId: string
   status: 'completed' | 'error'
@@ -345,6 +374,32 @@ export interface GenerateResponse {
     category: string
     categorySource: 'user' | 'auto'
   }
+}
+
+/* ── API: /content list ───────────────────────────── */
+
+export interface ContentListItem {
+  id: string
+  requestId: string
+  brandId: string | null
+  status: GenerateStatus
+  imageStyle: string
+  contentMeta: {
+    category: string
+    language: string
+  }
+  platforms: Platform[]
+  errorMessage: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ContentListResponse {
+  items: ContentListItem[]
+  total: number
+  skip: number
+  limit: number
+  hasMore: boolean
 }
 
 /* ── API: /finalize ────────────────────────────────── */

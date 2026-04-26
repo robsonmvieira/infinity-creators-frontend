@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   Sparkles,
   RefreshCw,
@@ -16,6 +17,7 @@ import {
 } from 'lucide-react'
 import { InstagramTab, SinglePostTab, ThreadsTab, XTab, SchedulingSection, BottomBar } from '@modules/create-content/application/components/result'
 import { useTabTransition } from '@modules/shared'
+import { useGeneratePoll } from '@modules/create-content/application/hooks/use-content-generation'
 import type {
   Platform,
   PlatformResult,
@@ -266,8 +268,13 @@ const TAB_CONFIG: { id: Platform; label: string; icon: typeof Camera }[] = [
 /* ── Page ──────────────────────────────────────────── */
 
 export default function CreateResultPage() {
-  const response = MOCK_RESPONSE
-  const results = response.results
+  const searchParams = useSearchParams()
+  const requestId = searchParams.get('requestId')
+  const { data: pollData, isLoading } = useGeneratePoll(requestId)
+
+  const results = pollData?.results ?? MOCK_RESPONSE.results
+  const isReady = pollData?.status === 'COMPLETED' && pollData.results !== null
+
   const [activeTab, setActiveTab] = useState<Platform>('instagram')
   const [igFormat, setIgFormat] = useState<'carousel' | 'post'>('carousel')
 
@@ -332,6 +339,26 @@ export default function CreateResultPage() {
 
   // Warnings
   const warnings = activeResult ? ('review' in activeResult ? activeResult.review.flags : []) : []
+
+  if (isLoading || (requestId && !isReady && pollData?.status !== 'FAILED')) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <p className="text-sm text-on-surface-variant">
+          {pollData?.status === 'PROCESSING' ? 'Gerando conteúdo...' : 'Carregando resultado...'}
+        </p>
+      </div>
+    )
+  }
+
+  if (pollData?.status === 'FAILED') {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+        <AlertTriangle size={32} className="text-error" />
+        <p className="text-sm text-error">{pollData.errorMessage || 'Erro ao gerar conteúdo.'}</p>
+      </div>
+    )
+  }
 
   return (
     <div className="flex-1 px-6 pb-8 pt-8 md:px-8">
@@ -427,71 +454,70 @@ export default function CreateResultPage() {
               onSlideSelection={handleSlideSelection}
             />
 
-            {/* Caption + Scheduling below carousel */}
-            <div className="grid grid-cols-2 gap-8">
-              <div className="space-y-4">
-                {igCarousel.caption.copyVariations.length > 1 && (
-                  <div>
-                    <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Caption</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {igCarousel.caption.copyVariations.map((c) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          onClick={() => { setCaptionCopyId(c.id); setEditedCaption(null) }}
-                          className={`cursor-pointer rounded-xl p-3 text-left transition-all ${captionCopyId === c.id ? 'border-2 border-primary bg-primary/5' : 'border border-outline-variant/15 bg-surface-container-low hover:border-outline-variant/30'}`}
-                        >
-                          <span className={`text-xs font-semibold ${captionCopyId === c.id ? 'text-on-surface' : 'text-on-surface-variant'}`}>{c.name}</span>
-                          <p className="mt-0.5 text-[10px] text-on-surface-variant">{c.description}</p>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="rounded-xl bg-surface-container p-4 ghost-border">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-medium text-on-surface-variant">
-                    <MessageSquare size={14} />
-                    Texto da Caption
-                    {editedCaption && <span className="text-[9px] text-amber-400">editado</span>}
-                  </div>
-                  <textarea
-                    value={caption}
-                    onChange={(e) => setEditedCaption(e.target.value)}
-                    className="min-h-[160px] w-full resize-y rounded-lg border border-outline-variant/10 bg-surface-container-low p-3 text-sm leading-relaxed text-on-surface no-scrollbar focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                  <p className={`mt-1 text-right text-[10px] ${captionCharCount > 1760 ? (captionCharCount > 2200 ? 'text-error' : 'text-amber-400') : 'text-on-surface-variant'}`}>
-                    {captionCharCount} / 2200
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5">
-                  {captionHashtags.map((tag, i) => (
-                    <span key={`${tag}-${i}`} className="group flex items-center gap-1 rounded-full bg-surface-bright px-2.5 py-0.5 text-xs text-on-surface-variant">
-                      #{tag}
-                      <button type="button" onClick={() => setCaptionHashtags((h) => h.filter((_, j) => j !== i))} className="cursor-pointer opacity-0 transition-opacity group-hover:opacity-100" aria-label={`Remover #${tag}`}>
-                        <XIcon size={10} className="hover:text-error" />
+            {/* Caption below carousel */}
+            <div className="space-y-4">
+              {igCarousel.caption.copyVariations.length > 1 && (
+                <div>
+                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Caption</p>
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                    {igCarousel.caption.copyVariations.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => { setCaptionCopyId(c.id); setEditedCaption(null) }}
+                        className={`cursor-pointer rounded-xl p-3 text-left transition-all ${captionCopyId === c.id ? 'border-2 border-primary bg-primary/5' : 'border border-outline-variant/15 bg-surface-container-low hover:border-outline-variant/30'}`}
+                      >
+                        <span className={`text-xs font-semibold ${captionCopyId === c.id ? 'text-on-surface' : 'text-on-surface-variant'}`}>{c.name}</span>
+                        <p className="mt-0.5 text-[10px] text-on-surface-variant">{c.description}</p>
                       </button>
-                    </span>
-                  ))}
-                  <button type="button" className="flex cursor-pointer items-center gap-1 text-xs text-on-surface-variant transition-colors hover:text-primary">
-                    <Plus size={12} /> Sugerir mais
-                  </button>
+                    ))}
+                  </div>
                 </div>
+              )}
+
+              <div className="rounded-xl bg-surface-container p-4 ghost-border">
+                <div className="mb-2 flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+                  <MessageSquare size={14} />
+                  Texto da Caption
+                  {editedCaption && <span className="text-[9px] text-amber-400">editado</span>}
+                </div>
+                <textarea
+                  value={caption}
+                  onChange={(e) => setEditedCaption(e.target.value)}
+                  className="min-h-[160px] w-full resize-y rounded-lg border border-outline-variant/10 bg-surface-container-low p-3 text-sm leading-relaxed text-on-surface no-scrollbar focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+                <p className={`mt-1 text-right text-[10px] ${captionCharCount > 1760 ? (captionCharCount > 2200 ? 'text-error' : 'text-amber-400') : 'text-on-surface-variant'}`}>
+                  {captionCharCount} / 2200
+                </p>
               </div>
 
-              <SchedulingSection
-                action={action}
-                onActionChange={setAction}
-                scheduleDate={scheduleDate}
-                onScheduleDateChange={setScheduleDate}
-                scheduleTime={scheduleTime}
-                onScheduleTimeChange={setScheduleTime}
-                platformLabel="Instagram"
-                onSubmit={() => {}}
-                disabled={false}
-              />
+              <div className="flex flex-wrap gap-1.5">
+                {captionHashtags.map((tag, i) => (
+                  <span key={`${tag}-${i}`} className="group flex items-center gap-1 rounded-full bg-surface-bright px-2.5 py-0.5 text-xs text-on-surface-variant">
+                    #{tag}
+                    <button type="button" onClick={() => setCaptionHashtags((h) => h.filter((_, j) => j !== i))} className="cursor-pointer opacity-0 transition-opacity group-hover:opacity-100" aria-label={`Remover #${tag}`}>
+                      <XIcon size={10} className="hover:text-error" />
+                    </button>
+                  </span>
+                ))}
+                <button type="button" className="flex cursor-pointer items-center gap-1 text-xs text-on-surface-variant transition-colors hover:text-primary">
+                  <Plus size={12} /> Sugerir mais
+                </button>
+              </div>
             </div>
+
+            {/* Scheduling — full width */}
+            <SchedulingSection
+              action={action}
+              onActionChange={setAction}
+              scheduleDate={scheduleDate}
+              onScheduleDateChange={setScheduleDate}
+              scheduleTime={scheduleTime}
+              onScheduleTimeChange={setScheduleTime}
+              platformLabel="Instagram"
+              onSubmit={() => {}}
+              disabled={false}
+            />
           </div>
         )}
 

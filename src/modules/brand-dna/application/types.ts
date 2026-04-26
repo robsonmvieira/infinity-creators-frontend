@@ -2,6 +2,9 @@
 
 export interface Persona {
   name: string
+  displayName: string
+  handle: string
+  avatarUrl: string
   bio: string
   styleReferences: string[]
 }
@@ -93,8 +96,88 @@ export interface PalettePreset {
 
 /* ── Defaults ──────────────────────────────────────── */
 
+/* ── Visual Identity ─────────────────────────────── */
+
+export interface VisualIdentity {
+  logo: BrandLogo
+  colors: BrandColors
+  fonts: FontSelection[]
+  defaultImageStyle: ImageStyle
+}
+
+/* ── References (aggregate) ──────────────────────── */
+
+export interface References {
+  anchors: ReferenceItem[]
+  antiPatterns: ReferenceItem[]
+  learnedPatterns: LearnedPattern[]
+}
+
+/* ── Brand (API entity) ──────────────────────────── */
+
+export interface Brand {
+  id: string
+  name: string
+  productId: string
+  language: string
+  secondaryLanguage: string | null
+  persona: Persona | null
+  audience: string | null
+  tonality: TonalitySlider[] | null
+  writingRules: WritingRules | null
+  references: References | null
+  visualIdentity: VisualIdentity | null
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface BrandListItem {
+  id: string
+  name: string
+  language: string
+  isActive: boolean
+  createdAt: string
+}
+
+export interface BrandListResponse {
+  items: BrandListItem[]
+  total: number
+  skip: number
+  limit: number
+  hasMore: boolean
+}
+
+export interface BrandPromptResponse {
+  prompt: string
+}
+
+/* ── Request types ───────────────────────────────── */
+
+export interface CreateBrandRequest {
+  name: string
+  productId?: string
+  language?: string
+  secondaryLanguage?: string | null
+  persona?: Persona
+  audience?: string
+  tonality?: TonalitySlider[]
+  writingRules?: WritingRules
+  references?: References
+  visualIdentity?: Partial<VisualIdentity>
+}
+
+export type UpdateBrandRequest = CreateBrandRequest
+
+export type PatchBrandRequest = Partial<CreateBrandRequest>
+
+/* ── Defaults ──────────────────────────────────────── */
+
 export const DEFAULT_PERSONA: Persona = {
   name: 'O Arquiteto Visionário',
+  displayName: '',
+  handle: '',
+  avatarUrl: '',
   bio: '',
   styleReferences: [],
 }
