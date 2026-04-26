@@ -48,19 +48,16 @@ function SlidePreview({
   const isBold = style.layout.type === 'full-text'
 
   // Resolve background
-  let bg = '#000'
   const img = slide.imageOptions.find((i) => i.id === selectedImageId)
-  if (img?.url) {
-    bg = `url(${img.url})`
-  } else {
-    const bgOpt = slide.backgroundOptions?.find((b) => b.id === selectedImageId)
-    if (bgOpt) bg = bgOpt.css
-  }
+  const bgOpt = slide.backgroundOptions?.find((b) => b.id === selectedImageId)
+  const bgStyle: React.CSSProperties = img?.url
+    ? { backgroundImage: `url(${img.url})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+    : { background: bgOpt?.css ?? '#000' }
 
   return (
     <div className="relative aspect-[1080/1350] overflow-hidden rounded-lg" style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
       {/* Background */}
-      <div className="absolute inset-0" style={{ background: bg, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+      <div className="absolute inset-0" style={bgStyle} />
 
       {/* Noise grain */}
       <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: NOISE_SVG, backgroundSize: '128px 128px' }} />

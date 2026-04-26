@@ -6,6 +6,7 @@ interface GenerateButtonProps {
   disabled: boolean
   isGenerating: boolean
   onGenerate: () => void
+  label?: string
 }
 
 export function GenerateButton({
@@ -14,7 +15,10 @@ export function GenerateButton({
   disabled,
   isGenerating,
   onGenerate,
+  label,
 }: Readonly<GenerateButtonProps>) {
+  const buttonLabel = label ?? (isGenerating ? 'Gerando...' : 'Gerar Conteúdo')
+
   return (
     <div className="mt-12 flex flex-col items-center justify-center gap-6">
       <button
@@ -28,7 +32,7 @@ export function GenerateButton({
         ) : (
           <Zap size={24} className="fill-current" />
         )}
-        <span>{isGenerating ? 'Gerando...' : 'Gerar Conteúdo'}</span>
+        <span>{buttonLabel}</span>
       </button>
 
       {hasBrandDna ? (
