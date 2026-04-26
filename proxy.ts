@@ -6,7 +6,7 @@ import { routing } from '@/src/i18n/routing'
 const intlMiddleware = createIntlMiddleware(routing)
 
 const AUTH_PATHS = ['/login', '/register', '/forgot-password', '/reset-password']
-const PROTECTED_PATHS = ['/dashboard', '/settings']
+const PROTECTED_PATHS = ['/dashboard', '/settings', '/brand', '/create', '/calendar', '/library']
 
 function isAuthPath(pathname: string): boolean {
   return AUTH_PATHS.some((path) => pathname.endsWith(path))
